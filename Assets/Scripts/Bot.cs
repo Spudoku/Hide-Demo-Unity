@@ -64,6 +64,7 @@ public class Bot : MonoBehaviour
         // loop through all hiding spots
         foreach (GameObject spot in World.Instance.GetHidingSpots())
         {
+            //Debug.Log($"Trying {spot.name}");
             Vector3 dir = spot.transform.position - target.transform.position;
             //Debug.DrawLine(spot.transform.position, target.transform.position, Color.blue, 0.2f);
             Vector3 hidePos = spot.transform.position + dir.normalized * hideDistance;
@@ -72,24 +73,24 @@ public class Bot : MonoBehaviour
             if (Vector3.Distance(transform.position, hidePos) < dist)
             {
                 choice = hidePos;
-                dist = Vector3.Distance(spot.transform.position, hidePos);
+
                 chosenDir = dir;
                 obstacle = spot;
+                dist = Vector3.Distance(transform.position, hidePos);
             }
         }
 
         // backtracking raycast to get opposite side of collider
         Collider col = obstacle.GetComponent<Collider>();
         Ray backRay = new Ray(choice, -chosenDir.normalized);
-        Debug.DrawRay(choice, -chosenDir.normalized);
 
         RaycastHit info;
         col.Raycast(backRay, out info, rayLength);
 
-        Vector3 finalPoint = info.point;
-        finalPoint += chosenDir.normalized * hideDistance;
-        finalPoint.y = transform.position.y;
+        Vector3 finalPoint = info.point + chosenDir.normalized * hideDistance;
 
+        finalPoint.y = transform.position.y;
+        Debug.DrawLine(transform.position, finalPoint, Color.cyan);
         SetDestination(finalPoint);
 
     }
@@ -103,8 +104,13 @@ public class Bot : MonoBehaviour
 
     void MoveTowardsDestination()
     {
-        transform.LookAt(destination);
+        // Vector3 dir = destination - transform.position;
 
+        // if (dir.magnitude > 0.01f)
+        // {
+
+        // }
+        transform.LookAt(destination);
         transform.Translate(0, 0, speed * Time.deltaTime);
     }
 }
