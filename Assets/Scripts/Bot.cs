@@ -26,12 +26,13 @@ public class Bot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // if (Vector3.Distance(transform.position, destination) < hideDistance)
-        // {
+        // hide if can see the target
+        if (CanSeeTarget())
+        {
+            CleverHide();
+        }
 
-        // }
-        CleverHide();
-        //Hide();
+
         MoveTowardsDestination();
     }
 
@@ -105,23 +106,26 @@ public class Bot : MonoBehaviour
 
     void MoveTowardsDestination()
     {
-        // Vector3 dir = destination - transform.position;
 
-        // if (dir.magnitude > 0.01f)
-        // {
-
-        // }
         destination.y = transform.position.y;
 
         transform.LookAt(destination);
         transform.Translate(0, 0, speed * Time.deltaTime);
     }
-    void OnGUI()
+
+    bool CanSeeTarget()
     {
-        debugStyle = new GUIStyle(GUI.skin.label)
+        RaycastHit raycastHit;
+        Vector3 rayToTarget = target.transform.position - transform.position;
+        if (Physics.Raycast(transform.position, rayToTarget, out raycastHit))
         {
-            fontSize = 24
-        };
-        GUI.Label(new Rect(10, 10, 500, 100), $"{destination}");
+            if (raycastHit.transform.gameObject.tag == "seeker")
+            {
+                return true;
+            }
+        }
+        return false;
     }
+
+
 }

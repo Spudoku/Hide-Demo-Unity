@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - hide
+  - seeker
   layers:
   - Default
   - TransparentFX
