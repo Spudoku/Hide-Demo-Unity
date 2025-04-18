@@ -16,7 +16,8 @@ public class PlayerMover : MonoBehaviour
     {
         float xMov = Input.GetAxis("Horizontal");
         float zMov = Input.GetAxis("Vertical");
-        Vector3 totalMov = new Vector3(xMov, 0f, zMov).normalized * speed * Time.deltaTime;
-        transform.position += totalMov;
+        //Vector3 totalMov = new Vector3(xMov, 0f, zMov).normalized * speed * Time.deltaTime;
+        //transform.position += totalMov;
+        transform.Translate(speed * Time.deltaTime * new Vector3(xMov, 0, zMov).normalized, Space.World);
     }
 }
