@@ -15,6 +15,8 @@ public class Bot : MonoBehaviour
 
     private float rayLength;
 
+    GUIStyle debugStyle;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -29,6 +31,7 @@ public class Bot : MonoBehaviour
 
         // }
         CleverHide();
+        //Hide();
         MoveTowardsDestination();
     }
 
@@ -59,43 +62,6 @@ public class Bot : MonoBehaviour
 
     void CleverHide()
     {
-        // float dist = Mathf.Infinity;
-
-        // Vector3 choice = Vector3.zero;
-        // Vector3 chosenDir = Vector3.zero;
-        // GameObject obstacle = World.Instance.GetHidingSpots()[0];
-        // // loop through all hiding spots
-        // foreach (GameObject spot in World.Instance.GetHidingSpots())
-        // {
-        //     //Debug.Log($"Trying {spot.name}");
-        //     Vector3 dir = spot.transform.position - target.transform.position;
-        //     //Debug.DrawLine(spot.transform.position, target.transform.position, Color.blue, 0.2f);
-        //     Vector3 hidePos = spot.transform.position + dir.normalized * hideDistance;
-        //     hidePos.y = transform.position.y;
-
-        //     if (Vector3.Distance(transform.position, hidePos) < dist)
-        //     {
-        //         choice = hidePos;
-
-        //         chosenDir = dir;
-        //         obstacle = spot;
-        //         dist = Vector3.Distance(transform.position, hidePos);
-        //     }
-
-        // }
-
-        // // backtracking raycast to get opposite side of collider
-        // Collider col = obstacle.GetComponent<Collider>();
-        // Ray backRay = new Ray(choice, -chosenDir.normalized);
-        // Debug.DrawRay(choice, -chosenDir.normalized, Color.blue);
-        // RaycastHit info;
-        // col.Raycast(backRay, out info, rayLength);
-
-        // Vector3 finalPoint = info.point + chosenDir.normalized * hideDistance;
-
-        // finalPoint.y = transform.position.y;
-        // Debug.DrawLine(transform.position, finalPoint, Color.cyan);
-        // SetDestination(finalPoint);
 
         float dist = Mathf.Infinity;
         Vector3 chosenSpot = Vector3.zero;
@@ -104,25 +70,30 @@ public class Bot : MonoBehaviour
 
         foreach (GameObject i in World.Instance.GetHidingSpots())
         {
+            Debug.Log(i.name);
             Vector3 hideDir = i.transform.position - target.transform.position;
             Vector3 hidePos = i.transform.position + hideDir.normalized * hideDistance;
-
+            hidePos.y = transform.position.y;
+            Debug.DrawRay(target.transform.position, hideDir);
+            Debug.DrawLine(transform.position, hidePos, Color.red);
             if (Vector3.Distance(transform.position, hidePos) < dist)
             {
                 chosenSpot = hidePos;
                 chosenDir = hideDir;
                 chosenGO = i;
                 dist = Vector3.Distance(transform.position, hidePos);
+                Debug.Log($"{i.name} is the closest!");
             }
-
         }
 
         Collider hideCol = chosenGO.GetComponent<Collider>();
-        Ray backRay = new Ray(chosenSpot, -chosenDir.normalized);
+        Ray backRay = new(chosenSpot, -chosenDir.normalized);
         RaycastHit info;
-        hideCol.Raycast(backRay, out info, dist);
+        hideCol.Raycast(backRay, out info, rayLength);
 
         SetDestination(info.point + chosenDir.normalized * hideDistance);
+
+
     }
 
     void SetDestination(Vector3 pos)
@@ -140,8 +111,17 @@ public class Bot : MonoBehaviour
         // {
 
         // }
-        Debug.DrawLine(transform.position, destination, Color.red);
+        destination.y = transform.position.y;
+
         transform.LookAt(destination);
         transform.Translate(0, 0, speed * Time.deltaTime);
+    }
+    void OnGUI()
+    {
+        debugStyle = new GUIStyle(GUI.skin.label)
+        {
+            fontSize = 24
+        };
+        GUI.Label(new Rect(10, 10, 500, 100), $"{destination}");
     }
 }
