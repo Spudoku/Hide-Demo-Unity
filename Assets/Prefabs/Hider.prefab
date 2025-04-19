@@ -129,6 +129,9 @@ MonoBehaviour:
   hideDistance: 7
   speed: 8
   destination: {x: 0, y: 0, z: 0}
+  cappedY: 1.5
+  maxDist: 45
+  minTeleportDist: 8
 --- !u!136 &3298597841948539499
 CapsuleCollider:
   m_ObjectHideFlags: 0

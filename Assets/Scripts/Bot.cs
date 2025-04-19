@@ -18,6 +18,9 @@ public class Bot : MonoBehaviour
 
     public float cappedY = 1f;
 
+    public float maxDist;        // max distance from 0,0
+    public float minTeleportDist;
+
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -133,7 +136,21 @@ public class Bot : MonoBehaviour
 
     public void Teleport()
     {
+        bool valid = false;
+        Vector3 position = transform.position;
+        while (!valid)
+        {
+            Vector3 tentative = new(Random.Range(-maxDist, maxDist), transform.position.y, Random.Range(-maxDist, maxDist));
+            // check chosen spot for colliders
+            Collider[] colliders = Physics.OverlapSphere(tentative, 0.001f);
+            if (colliders.Length <= 0 && Vector3.Distance(transform.position, tentative) > minTeleportDist)
+            {
+                valid = true;
+                position = tentative;
+            }
+        }
 
+        transform.position = position;
     }
 
 

@@ -20,6 +20,7 @@ public class PlayerMover : MonoBehaviour
     {
         score = 0;
         rb = GetComponent<Rigidbody>();
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     // Update is called once per frame
@@ -29,12 +30,14 @@ public class PlayerMover : MonoBehaviour
         time += Time.deltaTime;
         float xMov = Input.GetAxis("Horizontal");
         float zMov = Input.GetAxis("Vertical");
-        //Vector3 totalMov = new Vector3(xMov, 0f, zMov).normalized * speed * Time.deltaTime;
-        //transform.position += totalMov;
-        //transform.Translate(speed * Time.deltaTime * new Vector3(xMov, 0, zMov).normalized, Space.World);
+        Vector3 moveDir = transform.forward * zMov + transform.right * xMov;
+        moveDir.Normalize();
+
+        rb.linearVelocity = moveDir * speed;
 
 
         // rotate based on mouse input
+
         transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
     }
 
