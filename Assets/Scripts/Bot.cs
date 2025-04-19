@@ -1,4 +1,5 @@
 
+using System.Diagnostics.Contracts;
 using TMPro;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -15,7 +16,9 @@ public class Bot : MonoBehaviour
 
     private float rayLength;
 
-    GUIStyle debugStyle;
+    public float cappedY = 1f;
+
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -26,6 +29,7 @@ public class Bot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        transform.position = new(transform.position.x, cappedY, transform.position.z);
         // hide if can see the target
         if (CanSeeTarget())
         {
@@ -125,6 +129,11 @@ public class Bot : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public void Teleport()
+    {
+
     }
 
 

@@ -1,24 +1,56 @@
+using System.Data;
 using UnityEngine;
 
 
 // Slides the player object using input
 public class PlayerMover : MonoBehaviour
 {
+    GUIStyle debugStyle;
     public float speed;
     public int score;
+    public float time;
+
+    public float cappedY = 1f;
+
+    public float sensitivity = 1f;
+
+    Rigidbody rb;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         score = 0;
+        rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        transform.position = new(transform.position.x, cappedY, transform.position.z);
+        time += Time.deltaTime;
         float xMov = Input.GetAxis("Horizontal");
         float zMov = Input.GetAxis("Vertical");
         //Vector3 totalMov = new Vector3(xMov, 0f, zMov).normalized * speed * Time.deltaTime;
         //transform.position += totalMov;
-        transform.Translate(speed * Time.deltaTime * new Vector3(xMov, 0, zMov).normalized, Space.World);
+        //transform.Translate(speed * Time.deltaTime * new Vector3(xMov, 0, zMov).normalized, Space.World);
+
+
+        // rotate based on mouse input
+        transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
+    }
+
+    void OnGUI()
+    {
+        debugStyle = new GUIStyle() { fontSize = 24 };
+        GUI.Label(new Rect(10, 10, 500, 50), $"Score: {score}", debugStyle);
+        GUI.Label(new Rect(10, 60, 500, 50), $"Time: {Mathf.Round(time)}", debugStyle);
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.TryGetComponent<Bot>(out var bot))
+        {
+            bot.Teleport();
+            score++;
+        }
     }
 }
