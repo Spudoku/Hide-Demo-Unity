@@ -9,6 +9,7 @@ public sealed class World
 
     static World()
     {
+        // create an accessible list of hiding spots
         hidingSpots = GameObject.FindGameObjectsWithTag("hide");
     }
 

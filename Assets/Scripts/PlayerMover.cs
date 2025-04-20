@@ -26,6 +26,7 @@ public class PlayerMover : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // movement
         transform.position = new(transform.position.x, cappedY, transform.position.z);
         time += Time.deltaTime;
         float xMov = Input.GetAxis("Horizontal");

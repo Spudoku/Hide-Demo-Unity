@@ -22,8 +22,7 @@ public class CamOrbit : MonoBehaviour
     void Update()
     {
         Vector3 position = target.transform.position;
-        // turn clockwise if mouse moves left, counterclockwise
-        // if moves right
+        // look over the Seeker's shoulder
         Vector3 horizOffset = -target.transform.forward.normalized * targetHorizOffset;
         Vector3 offset = new(horizOffset.x, targetYOffset, horizOffset.z);
         position += offset;
