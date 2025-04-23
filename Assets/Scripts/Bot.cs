@@ -86,12 +86,9 @@ public class Bot : MonoBehaviour
         Collider hideCol = chosenGO.GetComponent<Collider>();
         // find a point just outside of the object's collider
         Ray backRay = new(chosenSpot, -chosenDir.normalized);
-        RaycastHit info;
-        hideCol.Raycast(backRay, out info, rayLength);
+        hideCol.Raycast(backRay, out RaycastHit info, rayLength);
 
         SetDestination(info.point + chosenDir.normalized * hideDistance);
-
-
     }
 
     void SetDestination(Vector3 pos)
