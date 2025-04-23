@@ -1,6 +1,7 @@
 
 
 using UnityEngine;
+using UnityEngine.AI;
 
 
 public class Bot : MonoBehaviour
@@ -19,12 +20,17 @@ public class Bot : MonoBehaviour
     public float maxDist;        // max distance from 0,0
     public float minTeleportDist;
 
+    NavMeshAgent agent;
+
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        agent = GetComponent<NavMeshAgent>();
         rayLength = hideDistance * 10f;
+        agent.speed = speed;
+
     }
 
     // Update is called once per frame
@@ -61,6 +67,13 @@ public class Bot : MonoBehaviour
             // position for this object to hide
             Vector3 hidePos = i.transform.position + hideDir.normalized * hideDistance;
             hidePos.y = transform.position.y;
+
+            // trying to prevent the seeker from being able to get between the hider and the hiding spot
+            if (Vector3.Distance(target.transform.position, hidePos) < Vector3.Distance(transform.position, hidePos))
+            {
+                continue;
+            }
+
             if (Vector3.Distance(transform.position, hidePos) < dist)
             {
                 chosenSpot = hidePos;
@@ -92,7 +105,9 @@ public class Bot : MonoBehaviour
         destination.y = transform.position.y;
 
         transform.LookAt(destination);
-        transform.Translate(0, 0, speed * Time.deltaTime);
+        // transform.Translate(0, 0, speed * Time.deltaTime);
+        agent.destination = destination;
+
     }
 
     // Line of Sight check
