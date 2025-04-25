@@ -26,6 +26,8 @@ public class PlayerMover : MonoBehaviour
 
     private float vertRot = 0f;
 
+    private Shooter shooter;
+
     // public Shooter shooter;      // class that handles shooting
 
     Rigidbody rb;
@@ -36,6 +38,8 @@ public class PlayerMover : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         Cursor.lockState = CursorLockMode.Locked;
         cam = Camera.main;
+
+        shooter = GetComponent<Shooter>();
     }
 
     // Update is called once per frame
@@ -62,6 +66,11 @@ public class PlayerMover : MonoBehaviour
         vertRot = Mathf.Clamp(vertRot, maxVert, minVert);
 
         cam.transform.localEulerAngles = new(vertRot, 0, 0);
+
+        if (Input.GetButtonDown("Fire1"))
+        {
+            shooter.TryShoot();
+        }
     }
 
     void OnGUI()
