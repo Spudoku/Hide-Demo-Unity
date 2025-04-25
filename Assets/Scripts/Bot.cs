@@ -15,28 +15,17 @@ public class Bot : MonoBehaviour
 
     private float rayLength;
 
-    public float cappedY = 1f;
+    //public float cappedY = 1f;
 
     public float maxDist;        // max distance from 0,0
     public float minTeleportDist;
 
     NavMeshAgent agent;
 
-
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        agent = GetComponent<NavMeshAgent>();
-        rayLength = hideDistance * 10f;
-        agent.speed = speed;
-
-    }
-
     // Update is called once per frame
     void Update()
     {
-        transform.position = new(transform.position.x, cappedY, transform.position.z);
+        //transform.position = new(transform.position.x, cappedY, transform.position.z);
         // hide if can see the target
         if (CanSeeTarget())
         {
@@ -102,7 +91,7 @@ public class Bot : MonoBehaviour
 
         destination.y = transform.position.y;
 
-        transform.LookAt(destination);
+        //transform.LookAt(destination);
         // transform.Translate(0, 0, speed * Time.deltaTime);
         agent.destination = destination;
 
@@ -143,5 +132,16 @@ public class Bot : MonoBehaviour
         transform.position = position;
     }
 
+    public void Init()
+    {
+        hideDistance = 3f;          // how far to stand next to an object
+        speed = 15f;
 
+        maxDist = 45f;        // max distance from 0,0
+        minTeleportDist = 8f;
+
+        agent = GetComponent<NavMeshAgent>();
+        rayLength = hideDistance * 10f;
+        agent.speed = speed;
+    }
 }

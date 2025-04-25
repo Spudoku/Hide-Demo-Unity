@@ -1,9 +1,10 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public sealed class HiderManager : MonoBehaviour
 {
 
-    [SerializeField] MeshFilter[] meshes;
+    [SerializeField] GameObject[] models;
     public float maxDist;        // max distance from 0,0
     [SerializeField] private GameObject prefab;
     [SerializeField] private GameObject target;
@@ -11,31 +12,31 @@ public sealed class HiderManager : MonoBehaviour
     public int hiderCount;
 
 
-    public MeshFilter[] GetHidingSpots()
-    {
-        return meshes;
-    }
-
     void Start()
     {
         for (int i = 0; i < hiderCount; i++)
         {
             Vector3 position = FindSpawnPoint();
-            GameObject newProp = Instantiate(prefab);
-            // assign random mesh filter
+            GameObject newProp = Instantiate(models[Random.Range(0, models.Length)]);
+
             newProp.transform.position = position;
-            MeshFilter newMesh = meshes[Random.Range(0, meshes.Length)];
-            MeshFilter propMesh = newProp.GetComponent<MeshFilter>();
-            propMesh = newMesh;
-            Bot bot = newProp.GetComponent<Bot>();
+
+            Bot bot = newProp.AddComponent<Bot>();
+            NavMeshObstacle ob = newProp.GetComponent<NavMeshObstacle>();
+            Destroy(ob);
+            NavMeshAgent agent = newProp.AddComponent<NavMeshAgent>();
+            agent.baseOffset = 0f;
 
             bot.target = target;
+
+            bot.Init();
         }
     }
 
     public Vector3 FindSpawnPoint()
     {
         bool valid = false;
+        float yPos = 3f;
         Vector3 position = transform.position;
         while (!valid)
         {
@@ -48,7 +49,7 @@ public sealed class HiderManager : MonoBehaviour
                 position = tentative;
             }
         }
-
+        position.y = yPos;
         return position;
     }
 
