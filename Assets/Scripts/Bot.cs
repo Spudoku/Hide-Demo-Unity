@@ -66,6 +66,7 @@ public class Bot : MonoBehaviour
 
             // position for this object to hide
             Vector3 hidePos = i.transform.position + hideDir.normalized * hideDistance;
+            Debug.DrawLine(target.transform.position, i.transform.position, Color.red, 3f);
             hidePos.y = transform.position.y;
 
             // trying to prevent the seeker from being able to get between the hider and the hiding spot
@@ -87,7 +88,7 @@ public class Bot : MonoBehaviour
         // find a point just outside of the object's collider
         Ray backRay = new(chosenSpot, -chosenDir.normalized);
         hideCol.Raycast(backRay, out RaycastHit info, rayLength);
-
+        Debug.DrawLine(target.transform.position, chosenGO.transform.position, Color.magenta, 3f);
         SetDestination(info.point + chosenDir.normalized * hideDistance);
     }
 
