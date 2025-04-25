@@ -14,3 +14,6 @@ location is chosen. Some calculations are done to make sure the chosen location 
 collider of the chosen object, notably by using a raycast to find the outer edge of the object.
 
 
+# Credits
+Rock assets (Stylized Low Poly Rocks) by: https://justcreate3d.studio/
+Plant assets ("Nature Pack - Low Poly Trees & Bushes") by: https://downtowngs.com/
