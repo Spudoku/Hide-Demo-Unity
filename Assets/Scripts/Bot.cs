@@ -7,7 +7,7 @@ using UnityEngine.AI;
 public class Bot : MonoBehaviour
 {
 
-    [SerializeField] GameObject target;                  // represents an object to avoid
+    public GameObject target;                  // represents an object to avoid
     public float hideDistance;          // how far to stand next to an object
     public float speed;
 

@@ -14,6 +14,8 @@ public class PlayerMover : MonoBehaviour
 
     public float sensitivity = 1f;
 
+    public HiderManager hiderManager;
+
     // public Shooter shooter;      // class that handles shooting
 
     Rigidbody rb;
