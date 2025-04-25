@@ -130,7 +130,7 @@ public class Bot : MonoBehaviour
         Vector3 position = transform.position;
         while (!valid)
         {
-            Vector3 tentative = new(Random.Range(-maxDist, maxDist), transform.position.y, Random.Range(-maxDist, maxDist));
+            Vector3 tentative = new(Random.Range(-maxDist, maxDist), transform.position.y + 5, Random.Range(-maxDist, maxDist));
             // check chosen spot for colliders
             Collider[] colliders = Physics.OverlapSphere(tentative, 0.001f);
             if (colliders.Length <= 0 && Vector3.Distance(transform.position, tentative) > minTeleportDist)

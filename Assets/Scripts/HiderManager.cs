@@ -14,6 +14,11 @@ public sealed class HiderManager : MonoBehaviour
 
     void Start()
     {
+        if (hiderCount <= 0)
+        {
+            hiderCount = 1;
+
+        }
         for (int i = 0; i < hiderCount; i++)
         {
             Vector3 position = FindSpawnPoint();
@@ -36,6 +41,11 @@ public sealed class HiderManager : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+
+    }
+
     public Vector3 FindSpawnPoint()
     {
         bool valid = false;
@@ -43,7 +53,7 @@ public sealed class HiderManager : MonoBehaviour
         Vector3 position = transform.position;
         while (!valid)
         {
-            Vector3 tentative = new(Random.Range(-maxDist, maxDist), transform.position.y, Random.Range(-maxDist, maxDist));
+            Vector3 tentative = new(Random.Range(-maxDist, maxDist), transform.position.y + 5, Random.Range(-maxDist, maxDist));
             // check chosen spot for colliders
             Collider[] colliders = Physics.OverlapSphere(tentative, 0.001f);
             if (colliders.Length <= 0)
@@ -55,5 +65,6 @@ public sealed class HiderManager : MonoBehaviour
         position.y = yPos;
         return position;
     }
+
 
 }

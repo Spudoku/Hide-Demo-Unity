@@ -1,5 +1,7 @@
 
+using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 // Slides the player object using input
@@ -13,8 +15,16 @@ public class PlayerMover : MonoBehaviour
     public float cappedY = 1f;
 
     public float sensitivity = 1f;
+    public float vertSensitivity = 1f;
 
     public HiderManager hiderManager;
+
+    Camera cam;
+
+    private float maxVert = -90f;
+    private float minVert = 45f;
+
+    private float vertRot = 0f;
 
     // public Shooter shooter;      // class that handles shooting
 
@@ -25,6 +35,7 @@ public class PlayerMover : MonoBehaviour
         score = 0;
         rb = GetComponent<Rigidbody>();
         Cursor.lockState = CursorLockMode.Locked;
+        cam = Camera.main;
     }
 
     // Update is called once per frame
@@ -44,12 +55,19 @@ public class PlayerMover : MonoBehaviour
         // rotate based on mouse input
         // TODO: rotate camera vertically based on Mouse Y
         transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
+
+        //cam.transform.Rotate(, 0, 0);
+
+        vertRot += Input.GetAxis("Mouse Y") * -vertSensitivity;
+        vertRot = Mathf.Clamp(vertRot, maxVert, minVert);
+
+        cam.transform.localEulerAngles = new(vertRot, 0, 0);
     }
 
     void OnGUI()
     {
         debugStyle = new GUIStyle() { fontSize = 24 };
-        GUI.Label(new Rect(10, 10, 500, 50), $"Score: {score}", debugStyle);
+        GUI.Label(new Rect(10, 10, 500, 50), $"Hiders Left: {hiderManager.hiderCount}", debugStyle);
         GUI.Label(new Rect(10, 60, 500, 50), $"Time: {Mathf.Round(time)}", debugStyle);
     }
 
@@ -57,8 +75,16 @@ public class PlayerMover : MonoBehaviour
     {
         if (collision.gameObject.TryGetComponent<Bot>(out var bot))
         {
-            bot.Teleport();
-            score++;
+            //bot.Teleport();
+            Destroy(collision.gameObject);
+            hiderManager.hiderCount--;
+
+            if (hiderManager.hiderCount <= 0)
+            {
+                // reset
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
+            //score++;
         }
     }
 }
