@@ -18,8 +18,11 @@ public sealed class HiderManager : MonoBehaviour
         {
             Vector3 position = FindSpawnPoint();
             GameObject newProp = Instantiate(models[Random.Range(0, models.Length)]);
+            newProp.tag = "hider";
 
             newProp.transform.position = position;
+            Rigidbody rb = newProp.GetComponent<Rigidbody>();
+            rb.mass = 0.1f;
 
             Bot bot = newProp.AddComponent<Bot>();
             NavMeshObstacle ob = newProp.GetComponent<NavMeshObstacle>();

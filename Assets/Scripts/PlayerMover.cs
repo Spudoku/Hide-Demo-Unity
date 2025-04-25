@@ -42,7 +42,7 @@ public class PlayerMover : MonoBehaviour
 
 
         // rotate based on mouse input
-
+        // TODO: rotate camera vertically based on Mouse Y
         transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
     }
 

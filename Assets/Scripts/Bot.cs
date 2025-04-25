@@ -2,6 +2,7 @@
 
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Rendering;
 
 
 public class Bot : MonoBehaviour
@@ -22,11 +23,16 @@ public class Bot : MonoBehaviour
 
     NavMeshAgent agent;
 
+    void Start()
+    {
+        agent = GetComponent<NavMeshAgent>();
+    }
     // Update is called once per frame
     void Update()
     {
         //transform.position = new(transform.position.x, cappedY, transform.position.z);
         // hide if can see the target
+        // TODO: check if camera.main can see target. If not, move!
         if (CanSeeTarget())
         {
             CleverHide();
@@ -52,17 +58,19 @@ public class Bot : MonoBehaviour
         {
             // direction from target (the Seeker) to a given object
             Vector3 hideDir = i.transform.position - target.transform.position;
+            Debug.DrawRay(i.transform.position, (i.transform.position - target.transform.position).normalized * hideDistance, Color.yellow, 3f);
 
             // position for this object to hide
             Vector3 hidePos = i.transform.position + hideDir.normalized * hideDistance;
-            Debug.DrawLine(target.transform.position, i.transform.position, Color.red, 3f);
+            //Debug.DrawLine(target.transform.position, i.transform.position, Color.red, 3f);
+            Debug.DrawLine(transform.position, hidePos, Color.blue, 3f);
             hidePos.y = transform.position.y;
 
             // trying to prevent the seeker from being able to get between the hider and the hiding spot
-            if (Vector3.Distance(target.transform.position, hidePos) < Vector3.Distance(transform.position, hidePos))
-            {
-                continue;
-            }
+            // if (Vector3.Distance(target.transform.position, hidePos) < Vector3.Distance(transform.position, hidePos))
+            // {
+            //     continue;
+            // }
 
             if (Vector3.Distance(transform.position, hidePos) < dist)
             {
@@ -73,12 +81,15 @@ public class Bot : MonoBehaviour
             }
         }
 
-        Collider hideCol = chosenGO.GetComponent<Collider>();
+        //Collider hideCol = chosenGO.GetComponent<Collider>();
         // find a point just outside of the object's collider
-        Ray backRay = new(chosenSpot, -chosenDir.normalized);
-        hideCol.Raycast(backRay, out RaycastHit info, rayLength);
-        Debug.DrawLine(target.transform.position, chosenGO.transform.position, Color.magenta, 3f);
-        SetDestination(info.point + chosenDir.normalized * hideDistance);
+        //Ray backRay = new(chosenSpot, -chosenDir.normalized);
+        //hideCol.Raycast(backRay, out RaycastHit info, rayLength);
+
+
+        Debug.DrawLine(transform.position, chosenSpot, Color.magenta, 3f);
+        //SetDestination(info.point + chosenDir.normalized * hideDistance);
+        SetDestination(chosenSpot);
     }
 
     void SetDestination(Vector3 pos)
