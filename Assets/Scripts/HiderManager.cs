@@ -11,9 +11,27 @@ public sealed class HiderManager : MonoBehaviour
 
     public int hiderCount;
 
+    public int extraProps;
+
+    void Awake()
+    {
+        World.Instance.Init();
+    }
 
     void Start()
     {
+        // spawn extra props
+        for (int i = 0; i < extraProps; i++)
+        {
+            Vector3 position = FindSpawnPoint();
+            GameObject newProp = Instantiate(models[Random.Range(0, models.Length)]);
+            newProp.transform.localScale *= Random.Range(0.6f, 2f);
+            newProp.transform.position = position;
+            newProp.transform.Rotate(0, Random.Range(0, 360f), 0);
+            Rigidbody rb = newProp.GetComponent<Rigidbody>();
+            rb.mass = 100000000f;
+        }
+
         if (hiderCount <= 0)
         {
             hiderCount = 1;
@@ -25,10 +43,11 @@ public sealed class HiderManager : MonoBehaviour
             GameObject newProp = Instantiate(models[Random.Range(0, models.Length)]);
             newProp.tag = "hider";
 
+            newProp.transform.localScale *= Random.Range(0.8f, 1.2f);
             newProp.transform.position = position;
             Rigidbody rb = newProp.GetComponent<Rigidbody>();
             rb.mass = 0.1f;
-
+            newProp.transform.Rotate(0, Random.Range(0, 360f), 0);
             Bot bot = newProp.AddComponent<Bot>();
             NavMeshObstacle ob = newProp.GetComponent<NavMeshObstacle>();
             Destroy(ob);
@@ -53,9 +72,9 @@ public sealed class HiderManager : MonoBehaviour
         Vector3 position = transform.position;
         while (!valid)
         {
-            Vector3 tentative = new(Random.Range(-maxDist, maxDist), transform.position.y + 5, Random.Range(-maxDist, maxDist));
+            Vector3 tentative = new(Random.Range(-maxDist, maxDist), transform.position.y + 0.1f, Random.Range(-maxDist, maxDist));
             // check chosen spot for colliders
-            Collider[] colliders = Physics.OverlapSphere(tentative, 0.001f);
+            Collider[] colliders = Physics.OverlapSphere(tentative, 3f);
             if (colliders.Length <= 0)
             {
                 valid = true;

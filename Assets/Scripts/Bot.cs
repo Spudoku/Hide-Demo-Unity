@@ -26,6 +26,7 @@ public class Bot : MonoBehaviour
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        World.Instance.Init();
     }
     // Update is called once per frame
     void Update()
@@ -146,13 +147,17 @@ public class Bot : MonoBehaviour
     public void Init()
     {
         hideDistance = 3f;          // how far to stand next to an object
-        speed = 15f;
+        speed = 20f;
 
         maxDist = 45f;        // max distance from 0,0
         minTeleportDist = 8f;
 
         agent = GetComponent<NavMeshAgent>();
         rayLength = hideDistance * 10f;
+
+        // agent initialization
         agent.speed = speed;
+        agent.radius = 3f;
+
     }
 }

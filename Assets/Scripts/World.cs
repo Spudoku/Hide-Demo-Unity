@@ -9,8 +9,7 @@ public sealed class World
 
     static World()
     {
-        // create an accessible list of hiding spots
-        hidingSpots = GameObject.FindGameObjectsWithTag("hide");
+        instance.Init();
     }
 
     private World() { }
@@ -23,6 +22,12 @@ public sealed class World
     public GameObject[] GetHidingSpots()
     {
         return hidingSpots;
+    }
+
+    public void Init()
+    {
+        // create an accessible list of hiding spots
+        hidingSpots = GameObject.FindGameObjectsWithTag("hide");
     }
 
 }

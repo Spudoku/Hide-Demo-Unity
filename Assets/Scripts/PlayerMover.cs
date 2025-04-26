@@ -28,6 +28,8 @@ public class PlayerMover : MonoBehaviour
 
     private Shooter shooter;
 
+    private bool hasCollided = false;
+
     // public Shooter shooter;      // class that handles shooting
 
     Rigidbody rb;
@@ -82,8 +84,9 @@ public class PlayerMover : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.TryGetComponent<Bot>(out var bot))
+        if (!hasCollided && collision.gameObject.TryGetComponent<Bot>(out var bot))
         {
+            hasCollided = true;
             //bot.Teleport();
             Destroy(collision.gameObject);
             hiderManager.hiderCount--;
@@ -95,5 +98,10 @@ public class PlayerMover : MonoBehaviour
             }
             //score++;
         }
+    }
+
+    void OnCollisionExit(Collision collision)
+    {
+        hasCollided = false;
     }
 }
