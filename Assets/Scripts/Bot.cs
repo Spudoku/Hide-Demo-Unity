@@ -29,7 +29,7 @@ public class Bot : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         World.Instance.Init();
-        //myRenderer = GetComponent<Renderer>();
+        myRenderer = GetComponent<Renderer>();
     }
     // // Update is called once per frame
     // void Update()
@@ -48,6 +48,10 @@ public class Bot : MonoBehaviour
         if (!myRenderer.isVisible)
         {
             CleverHide();
+        }
+        else
+        {
+            SetDestination(transform.position);
         }
 
 
@@ -121,24 +125,24 @@ public class Bot : MonoBehaviour
     }
 
     // Line of Sight check
-    bool CanSeeTarget()
-    {
-        RaycastHit raycastHit;
-        Vector3 rayToTarget = target.transform.position - transform.position;
-        if (Physics.Raycast(transform.position, rayToTarget, out raycastHit))
-        {
-            if (raycastHit.transform.gameObject.tag == "seeker")
-            {
-                return true;
-            }
-        }
-        return false;
-    }
+    // bool CanSeeTarget()
+    // {
+    //     RaycastHit raycastHit;
+    //     Vector3 rayToTarget = target.transform.position - transform.position;
+    //     if (Physics.Raycast(transform.position, rayToTarget, out raycastHit))
+    //     {
+    //         if (raycastHit.transform.gameObject.tag == "seeker")
+    //         {
+    //             return true;
+    //         }
+    //     }
+    //     return false;
+    // }
 
-    bool CanBeSeen()
-    {
-        return true;
-    }
+    // bool CanBeSeen()
+    // {
+    //     return true;
+    // }
 
     // move to a new location once touched by the Seeker
     public void Teleport()
