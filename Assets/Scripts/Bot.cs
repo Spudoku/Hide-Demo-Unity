@@ -23,6 +23,8 @@ public class Bot : MonoBehaviour
 
     NavMeshAgent agent;
 
+    Renderer renderer;
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -31,10 +33,8 @@ public class Bot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //transform.position = new(transform.position.x, cappedY, transform.position.z);
-        // hide if can see the target
-        // TODO: check if camera.main can see target. If not, move!
-        if (CanSeeTarget())
+        // only move when not visible to the camera
+        if (!renderer.isVisible)
         {
             CleverHide();
         }
@@ -124,6 +124,11 @@ public class Bot : MonoBehaviour
         return false;
     }
 
+    bool CanBeSeen()
+    {
+        return true;
+    }
+
     // move to a new location once touched by the Seeker
     public void Teleport()
     {
@@ -159,5 +164,6 @@ public class Bot : MonoBehaviour
         agent.speed = speed;
         agent.radius = 3f;
 
+        renderer = GetComponent<Renderer>();
     }
 }
