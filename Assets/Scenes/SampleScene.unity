@@ -4796,8 +4796,8 @@ MonoBehaviour:
   maxDist: 45
   prefab: {fileID: 4510470350341785843, guid: ebeabd8bcfc101149a67c7c3a0ba7507, type: 3}
   target: {fileID: 1362719646}
-  hiderCount: 10
-  extraProps: 100
+  hiderCount: 1
+  extraProps: 1
 --- !u!1 &1453864832
 GameObject:
   m_ObjectHideFlags: 0

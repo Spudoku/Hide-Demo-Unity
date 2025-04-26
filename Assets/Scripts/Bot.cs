@@ -23,18 +23,29 @@ public class Bot : MonoBehaviour
 
     NavMeshAgent agent;
 
-    Renderer renderer;
+    Renderer myRenderer;
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         World.Instance.Init();
+        //myRenderer = GetComponent<Renderer>();
     }
-    // Update is called once per frame
-    void Update()
+    // // Update is called once per frame
+    // void Update()
+    // {
+    //     //!myRenderer.isVisible
+    //     if (CanSeeTarget())
+    //     {
+    //         CleverHide();
+    //     }
+    // }
+
+    void LateUpdate()
     {
         // only move when not visible to the camera
-        if (!renderer.isVisible)
+        // trying to fix it 
+        if (!myRenderer.isVisible)
         {
             CleverHide();
         }
@@ -164,6 +175,6 @@ public class Bot : MonoBehaviour
         agent.speed = speed;
         agent.radius = 3f;
 
-        renderer = GetComponent<Renderer>();
+
     }
 }

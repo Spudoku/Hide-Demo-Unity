@@ -65,6 +65,7 @@ public sealed class HiderManager : MonoBehaviour
 
     }
 
+    // TODO: replace with for loop instead of while loop
     public Vector3 FindSpawnPoint()
     {
         bool valid = false;
@@ -74,12 +75,9 @@ public sealed class HiderManager : MonoBehaviour
         {
             Vector3 tentative = new(Random.Range(-maxDist, maxDist), transform.position.y + 0.1f, Random.Range(-maxDist, maxDist));
             // check chosen spot for colliders
-            Collider[] colliders = Physics.OverlapSphere(tentative, 3f);
-            if (colliders.Length <= 0)
-            {
-                valid = true;
-                position = tentative;
-            }
+            //Collider[] colliders = Physics.OverlapSphere(tentative, 3f);
+            valid = true;
+            position = tentative;
         }
         position.y = yPos;
         return position;
