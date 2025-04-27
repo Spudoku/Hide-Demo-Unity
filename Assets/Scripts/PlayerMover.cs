@@ -19,7 +19,7 @@ public class PlayerMover : MonoBehaviour
 
     public HiderManager hiderManager;
 
-    [SerializeField] private float penalty = 5f;
+    [SerializeField] private float penalty;
 
     Camera cam;
 
@@ -30,6 +30,7 @@ public class PlayerMover : MonoBehaviour
 
     private Shooter shooter;
 
+    private bool hasCollided = false;
 
     // public Shooter shooter;      // class that handles shooting
 
@@ -115,5 +116,26 @@ public class PlayerMover : MonoBehaviour
 
     }
 
+    void OnCollisionEnter(Collision collision)
+    {
+        if (!hasCollided && collision.gameObject.TryGetComponent<Bot>(out var bot))
+        {
+            hasCollided = true;
+            //bot.Teleport();
+            Destroy(collision.gameObject);
+            hiderManager.hiderCount--;
 
+            if (hiderManager.hiderCount <= 0)
+            {
+                // reset
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
+            //score++;
+        }
+    }
+
+    void OnCollisionExit(Collision collision)
+    {
+        hasCollided = false;
+    }
 }
