@@ -45,15 +45,18 @@ public class Bot : MonoBehaviour
     {
         // only move when not visible to the camera
         // trying to fix it 
-        if (!myRenderer.isVisible)
+        // if (!myRenderer.isVisible)
+        // {
+        //     CleverHide();
+        // }
+        // else
+        // {
+        //     SetDestination(transform.position);
+        // }
+        if (CanSeeTarget())
         {
             CleverHide();
         }
-        else
-        {
-            SetDestination(transform.position);
-        }
-
 
         MoveTowardsDestination();
     }
@@ -124,20 +127,20 @@ public class Bot : MonoBehaviour
 
     }
 
-    // Line of Sight check
-    // bool CanSeeTarget()
-    // {
-    //     RaycastHit raycastHit;
-    //     Vector3 rayToTarget = target.transform.position - transform.position;
-    //     if (Physics.Raycast(transform.position, rayToTarget, out raycastHit))
-    //     {
-    //         if (raycastHit.transform.gameObject.tag == "seeker")
-    //         {
-    //             return true;
-    //         }
-    //     }
-    //     return false;
-    // }
+    //Line of Sight check
+    bool CanSeeTarget()
+    {
+        RaycastHit raycastHit;
+        Vector3 rayToTarget = target.transform.position - transform.position;
+        if (Physics.Raycast(transform.position, rayToTarget, out raycastHit))
+        {
+            if (raycastHit.transform.gameObject.tag == "seeker")
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 
     // bool CanBeSeen()
     // {

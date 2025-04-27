@@ -46,16 +46,16 @@ public sealed class HiderManager : MonoBehaviour
             bot.Init();
         }
         // spawn extra props
-        for (int i = 0; i < extraProps; i++)
-        {
-            Vector3 position = FindSpawnPoint();
-            GameObject newProp = Instantiate(models[Random.Range(0, models.Length)]);
-            newProp.transform.localScale *= Random.Range(0.6f, 2f);
-            newProp.transform.position = position;
-            newProp.transform.Rotate(0, Random.Range(0, 360f), 0);
-            Rigidbody rb = newProp.GetComponent<Rigidbody>();
-            rb.mass = 100000000f;
-        }
+        // for (int i = 0; i < extraProps; i++)
+        // {
+        //     Vector3 position = FindSpawnPoint();
+        //     GameObject newProp = Instantiate(models[Random.Range(0, models.Length)]);
+        //     newProp.transform.localScale *= Random.Range(0.6f, 2f);
+        //     newProp.transform.position = position;
+        //     newProp.transform.Rotate(0, Random.Range(0, 360f), 0);
+        //     Rigidbody rb = newProp.GetComponent<Rigidbody>();
+        //     rb.mass = 100000000f;
+        // }
 
         if (hiderCount <= 0)
         {
@@ -66,12 +66,7 @@ public sealed class HiderManager : MonoBehaviour
 
     }
 
-    void Update()
-    {
-
-    }
-
-    // TODO: replace with for loop instead of while loop
+    // finds a 'suitable' spawn location
     public Vector3 FindSpawnPoint()
     {
         float yPos = 5f;
@@ -81,7 +76,7 @@ public sealed class HiderManager : MonoBehaviour
             Vector3 tentative = new(transform.position.x + Random.Range(-maxDist, maxDist), yPos, transform.position.z + Random.Range(-maxDist, maxDist));
             tentative.y = yPos;
             // check chosen spot for colliders
-            Collider[] colliders = Physics.OverlapSphere(tentative, 3f);
+            Collider[] colliders = Physics.OverlapSphere(tentative, 1.5f);
             if (colliders.Length <= 0)
             {
                 return tentative;
