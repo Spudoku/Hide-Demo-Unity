@@ -43,18 +43,23 @@ public class Shooter : MonoBehaviour
         if (curWait > fireInterval && !readyToFire)
         {
             readyToFire = true;
+            // TODO: play sound effect
         }
 
     }
 
     public RaycastHit TryShoot()
     {
-
-        // TODO SHOOTING
         Debug.Log("Trying to shoot here!");
-        curWait = 0;
+        if (readyFire)
+        {
+            // TODO SHOOTING
 
-        return Shoot();
+            curWait = 0;
+
+            return Shoot();
+        }
+        return new RaycastHit();
     }
 
     private RaycastHit Shoot()
@@ -64,7 +69,17 @@ public class Shooter : MonoBehaviour
         Ray ray = cam.ScreenPointToRay(point);
 
         hitSomething = Physics.Raycast(ray, out RaycastHit hit);
-        StartCoroutine(DrawTempLine(transform.position, hit.point, 2f));
+        if (hitSomething)
+        {
+            Debug.Log("Hit Something!");
+            StartCoroutine(DrawTempLine(transform.position, hit.point, 2f));
+        }
+        else
+        {
+            Debug.Log("Did NOT hit something");
+            StartCoroutine(DrawTempLine(transform.position, cam.transform.forward.normalized * 100f, 2f));
+        }
+
         return hit;
     }
 

@@ -71,7 +71,16 @@ public class PlayerMover : MonoBehaviour
 
         if (Input.GetButtonDown("Fire1"))
         {
-            shooter.TryShoot();
+            RaycastHit hit = shooter.TryShoot();
+
+            if (hit.collider != null && hit.collider.gameObject.CompareTag("hider"))
+            {
+                RemoveHider(hit.collider.gameObject);
+            }
+            else
+            {
+                // penalty for missing
+            }
         }
     }
 
@@ -80,24 +89,31 @@ public class PlayerMover : MonoBehaviour
         debugStyle = new GUIStyle() { fontSize = 24 };
         GUI.Label(new Rect(10, 10, 500, 50), $"Hiders Left: {hiderManager.hiderCount}", debugStyle);
         GUI.Label(new Rect(10, 60, 500, 50), $"Time: {Mathf.Round(time)}", debugStyle);
+        GUI.Label(new Rect(cam.pixelWidth / 2, cam.pixelHeight / 2, 10, 10), "+", debugStyle);
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        if (!hasCollided && collision.gameObject.TryGetComponent<Bot>(out var bot))
+        if (!hasCollided && collision.gameObject.CompareTag("hider"))
         {
             hasCollided = true;
             //bot.Teleport();
-            Destroy(collision.gameObject);
-            hiderManager.hiderCount--;
+            RemoveHider(collision.gameObject);
 
-            if (hiderManager.hiderCount <= 0)
-            {
-                // reset
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-            }
-            //score++;
         }
+    }
+
+    void RemoveHider(GameObject go)
+    {
+        Destroy(go);
+        hiderManager.hiderCount--;
+
+        if (hiderManager.hiderCount <= 0)
+        {
+            // reset
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
     }
 
     void OnCollisionExit(Collision collision)

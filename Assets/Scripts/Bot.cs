@@ -31,31 +31,17 @@ public class Bot : MonoBehaviour
         World.Instance.Init();
         myRenderer = GetComponent<Renderer>();
     }
-    // // Update is called once per frame
-    // void Update()
-    // {
-    //     //!myRenderer.isVisible
-    //     if (CanSeeTarget())
-    //     {
-    //         CleverHide();
-    //     }
-    // }
 
     void LateUpdate()
     {
-        // only move when not visible to the camera
-        // trying to fix it 
-        // if (!myRenderer.isVisible)
-        // {
-        //     CleverHide();
-        // }
-        // else
-        // {
-        //     SetDestination(transform.position);
-        // }
-        if (CanSeeTarget())
+
+        if (CanSeeTarget() && Vector3.Distance(transform.position, target.transform.position) > 5f)
         {
             CleverHide();
+        }
+        else
+        {
+            SetDestination(transform.position);
         }
 
         MoveTowardsDestination();
@@ -130,9 +116,8 @@ public class Bot : MonoBehaviour
     //Line of Sight check
     bool CanSeeTarget()
     {
-        RaycastHit raycastHit;
         Vector3 rayToTarget = target.transform.position - transform.position;
-        if (Physics.Raycast(transform.position, rayToTarget, out raycastHit))
+        if (Physics.Raycast(transform.position, rayToTarget, out RaycastHit raycastHit))
         {
             if (raycastHit.transform.gameObject.tag == "seeker")
             {
