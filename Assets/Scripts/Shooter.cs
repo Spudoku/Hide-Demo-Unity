@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UIElements;
 [RequireComponent(typeof(LineRenderer))]
 public class Shooter : MonoBehaviour
@@ -7,11 +8,13 @@ public class Shooter : MonoBehaviour
 
     [SerializeField] private float fireInterval = 1f;       // can shoot once every fireInterval seconds
 
-    [SerializeField] private AudioClip readyFire;
-    [SerializeField] private AudioClip shoot;
+    [SerializeField] private AudioClip readyFireSFX;
 
-    [SerializeField] private AudioClip miss;
-    [SerializeField] private AudioClip hit;
+    [SerializeField] private AudioClip noReadyFireSFX;
+    [SerializeField] private AudioClip shootSFX;
+
+    [SerializeField] private AudioClip missSFX;
+    [SerializeField] private AudioClip hitSFX;
 
     [SerializeField] private AudioSource sfx;
 
@@ -27,7 +30,7 @@ public class Shooter : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        curWait = fireInterval;
+        curWait = fireInterval - 0.1f;
         readyToFire = true;
 
         lineRenderer = GetComponent<LineRenderer>();
@@ -43,7 +46,7 @@ public class Shooter : MonoBehaviour
         if (curWait > fireInterval && !readyToFire)
         {
             readyToFire = true;
-            // TODO: play sound effect
+            sfx.PlayOneShot(readyFireSFX);
         }
 
     }
@@ -53,12 +56,14 @@ public class Shooter : MonoBehaviour
         Debug.Log("Trying to shoot here!");
         if (readyToFire)
         {
-            // TODO SHOOTING
-
             curWait = 0;
             readyToFire = false;
-
+            sfx.PlayOneShot(shootSFX);
             return Shoot();
+        }
+        else
+        {
+            sfx.PlayOneShot(noReadyFireSFX);
         }
         return new RaycastHit();
     }
@@ -70,14 +75,27 @@ public class Shooter : MonoBehaviour
         Ray ray = cam.ScreenPointToRay(point);
 
         hitSomething = Physics.Raycast(ray, out RaycastHit hit);
+
         if (hitSomething)
         {
             Debug.Log("Hit Something!");
             StartCoroutine(DrawTempLine(transform.position, hit.point, 2f));
+
+            if (hit.collider != null && hit.collider.gameObject.CompareTag("hider"))
+            {
+                sfx.PlayOneShot(hitSFX);
+            }
+            else
+            {
+                Debug.Log("Miss SFX here");
+                sfx.PlayOneShot(missSFX);
+            }
         }
         else
         {
             Debug.Log("Did NOT hit something");
+            Debug.Log("Miss SFX here");
+            sfx.PlayOneShot(missSFX);
             StartCoroutine(DrawTempLine(transform.position, cam.transform.forward.normalized * 100f, 2f));
         }
 

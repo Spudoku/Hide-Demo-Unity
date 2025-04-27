@@ -19,6 +19,8 @@ public class PlayerMover : MonoBehaviour
 
     public HiderManager hiderManager;
 
+    [SerializeField] private float penalty = 5f;
+
     Camera cam;
 
     private float maxVert = -90f;
@@ -28,7 +30,6 @@ public class PlayerMover : MonoBehaviour
 
     private Shooter shooter;
 
-    private bool hasCollided = false;
 
     // public Shooter shooter;      // class that handles shooting
 
@@ -86,6 +87,7 @@ public class PlayerMover : MonoBehaviour
             else
             {
                 // penalty for missing
+                time += penalty;
             }
         }
     }
@@ -99,16 +101,6 @@ public class PlayerMover : MonoBehaviour
         GUI.Label(new Rect(cam.pixelWidth / 2, cam.pixelHeight / 2, 10, 10), "+", debugStyle);
     }
 
-    void OnCollisionEnter(Collision collision)
-    {
-        if (!hasCollided && collision.gameObject.CompareTag("hider"))
-        {
-            hasCollided = true;
-            //bot.Teleport();
-            RemoveHider(collision.gameObject);
-
-        }
-    }
 
     void RemoveHider(GameObject go)
     {
@@ -123,8 +115,5 @@ public class PlayerMover : MonoBehaviour
 
     }
 
-    void OnCollisionExit(Collision collision)
-    {
-        hasCollided = false;
-    }
+
 }

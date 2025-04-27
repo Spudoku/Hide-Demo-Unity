@@ -24,3 +24,4 @@ Classic Laser Pew sound effect: https://freesound.org/people/SeanSecret/sounds/4
 bell ding 2.wav: Alva Majo, https://freesound.org/people/5ro4/sounds/611112/?
 Wrong.mp3 by AbdrTar -- https://freesound.org/s/558121/ -- License: Creative Commons 0
 GunClick.mp3 by Yap_Audio_Production -- https://freesound.org/s/218482/ -- License: Attribution 4.0
+Empty Gun Shot by KlawyKogut -- https://freesound.org/s/154934/ -- License: Creative Commons 0
