@@ -42,6 +42,12 @@ public class PlayerMover : MonoBehaviour
         cam = Camera.main;
 
         shooter = GetComponent<Shooter>();
+        debugStyle = new GUIStyle()
+        {
+            fontSize = 24,
+            normal = new GUIStyleState() { textColor = Color.white }
+        };
+
     }
 
     // Update is called once per frame
@@ -86,7 +92,8 @@ public class PlayerMover : MonoBehaviour
 
     void OnGUI()
     {
-        debugStyle = new GUIStyle() { fontSize = 24 };
+
+
         GUI.Label(new Rect(10, 10, 500, 50), $"Hiders Left: {hiderManager.hiderCount}", debugStyle);
         GUI.Label(new Rect(10, 60, 500, 50), $"Time: {Mathf.Round(time)}", debugStyle);
         GUI.Label(new Rect(cam.pixelWidth / 2, cam.pixelHeight / 2, 10, 10), "+", debugStyle);

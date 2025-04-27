@@ -35,7 +35,7 @@ public class Bot : MonoBehaviour
     void LateUpdate()
     {
 
-        if (CanSeeTarget() && Vector3.Distance(transform.position, target.transform.position) > 5f)
+        if (CanSeeTarget() && Vector3.Distance(transform.position, target.transform.position) > 10f)
         {
             CleverHide();
         }

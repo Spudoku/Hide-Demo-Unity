@@ -51,11 +51,12 @@ public class Shooter : MonoBehaviour
     public RaycastHit TryShoot()
     {
         Debug.Log("Trying to shoot here!");
-        if (readyFire)
+        if (readyToFire)
         {
             // TODO SHOOTING
 
             curWait = 0;
+            readyToFire = false;
 
             return Shoot();
         }
